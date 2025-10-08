@@ -33,7 +33,7 @@ assign out = psum_q;
 
 // Your code goes here
 always @(posedge clk or negedge reset) begin
-    if(!reset) begin
+    if(reset) begin
         a_q <= 0;
         b_q <= 0;
         psum_q <= 0;
