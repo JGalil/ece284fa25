@@ -32,8 +32,8 @@ wire [psum_bw-2:0] prod_mag = a_mag * b_mag;
 assign out = psum_q;
 
 // Your code goes here
-always_ff @(posedge clk or negedge reset) begin
-    if(reset) begin
+always @(posedge clk or negedge reset) begin
+    if(!reset) begin
         a_q <= 0;
         b_q <= 0;
         psum_q <= 0;
