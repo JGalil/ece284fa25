@@ -1,8 +1,9 @@
 // Created by prof. Mingu Kang @VVIP Lab in UCSD ECE department
 // Please do not spread this code without permission 
-module mac #(parameter int bw = 8, int psum_bw = 16)(out, A, B, format, acc, clk, reset);
+module mac (out, A, B, format, acc, clk, reset);
 
-
+parameter bw = 8;
+parameter psum_bw = 16;
 
 input clk;
 input acc;
