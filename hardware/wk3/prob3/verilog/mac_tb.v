@@ -51,7 +51,7 @@ function [3:0] w_bin ;
     else 
      w_bin[1] = 0;
 
-    if (weight>0) 
+    if (weight>0)
      w_bin[0] = 1;
     else 
      w_bin[0] = 0;
@@ -62,23 +62,31 @@ endfunction
 
 
 function [3:0] x_bin ;
-
-...
-
+  input integer weight;
+  begin
+    x_bin = weight[3:0];
+  end
 endfunction
 
 
 // Below function is for verification
 function [psum_bw-1:0] mac_predicted;
-  
-...
+
+    input [bw-1:0] a;
+    input [bw-1:0] b;
+    input [psum_bw-1:0] c;
+    reg signed [psum_bw-1:0] result;
+    begin
+        result = ($signed(a) * b) + c;
+        mac_predicted = result;
+    end
 
 endfunction
 
 
 
 mac_wrapper #(.bw(bw), .psum_bw(psum_bw)) mac_wrapper_instance (
-	.clk(clk), 
+	      .clk(clk), 
         .a(a), 
         .b(b),
         .c(c),
