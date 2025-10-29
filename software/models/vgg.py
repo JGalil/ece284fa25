@@ -53,8 +53,8 @@ def VGG13():
     return VGG('VGG13')
 
 
-#def VGG16():
-#    return VGG('VGG16')
+def VGG16():
+    return VGG('VGG16')
 
 def VGG16(**kwargs):
     model = VGG(vgg_name = 'VGG16', **kwargs)
