@@ -14,7 +14,7 @@ wire [2*bw:0] mult;
 
 wire [psum_bw-1:0] add;
 
-    assign mult = {1'b0, a} * {b[bw-1], b};
+assign mult = {1'b0, a} * {{(bw){b[bw-1]}}, b};
     assign add = {{(psum_bw - 2*bw+1){mult[2*bw]}}, mult};
     assign out = add + c;
 
