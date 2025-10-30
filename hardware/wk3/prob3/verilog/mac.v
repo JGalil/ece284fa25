@@ -10,16 +10,9 @@ input  [bw-1:0] a;    // unsigned activation
 input  [bw-1:0] b;    // signed weight
 input  [psum_bw-1:0] c; // signed psum
 
-wire signed [2*bw:0] mult;
+wire signed [psum_bw-1:0] a_ext = {{(psum_bw-bw-1){1'b0}}, a};     // Zero extend
+wire signed [psum_bw-1:0] b_ext = {{(psum_bw-bw-1){b[bw-1]}}, b};  // Sign extend
 
-wire signed [psum_bw-1:0] add;
-
-wire signed a_signed = {1'b0, a};
-
-wire signed b_signed = {{b[bw-1]}, b};
-
-assign mult =  a_signed * b_signed;
-assign add = {{(psum_bw - (2*bw+1)){mult[2*bw]}}, mult};
-assign out = add + c;
+assign out = (a_ext * b_ext) + c;
 
 endmodule
