@@ -18,11 +18,6 @@ wire signed [2*bw-1:0] prod1 = $signed({1'b0, x1}) * $signed(w1);
 wire signed [2*bw-1:0] prod2 = $signed({1'b0, x2}) * $signed(w2);
 wire signed [2*bw-1:0] prod3 = $signed({1'b0, x3}) * $signed(w3);
 
-wire signed [2*bw-1:0] prod0 = p0[2*bw-1:0];
-wire signed [2*bw-1:0] prod1 = p1[2*bw-1:0];
-wire signed [2*bw-1:0] prod2 = p2[2*bw-1:0];
-wire signed [2*bw-1:0] prod3 = p3[2*bw-1:0];
-
 wire signed [2*bw:0] sum01 = prod0 + prod1;
 wire signed [2*bw:0] sum23 = prod2 + prod3;
 wire signed [psum_bw-1:0] sum = sum01 + sum23;
