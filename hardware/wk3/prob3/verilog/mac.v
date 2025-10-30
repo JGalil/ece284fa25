@@ -14,12 +14,8 @@ wire [2*bw-1:0] mult;
 
 wire [psum_bw-1:0] add;
 
-always_comb begin
-    mult = {1'b0, a} * {b[bw-1], b};
-    add = {{(psum_bw - 2*bw){mult[2*bw-1]}}, mult};
-    out = add + c;
-end
-
-
+    assign mult = {1'b0, a} * {b[bw-1], b};
+    assign add = {{(psum_bw - 2*bw){mult[2*bw-1]}}, mult};
+    assign out = add + c;
 
 endmodule
