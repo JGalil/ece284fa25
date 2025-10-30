@@ -9,8 +9,14 @@ parameter psum_bw = 16;
 
 reg clk = 0;
 
-reg  [bw-1:0] a;
-reg  [bw-1:0] b;
+reg  [bw-1:0] x0;
+reg  [bw-1:0] x1;
+reg  [bw-1:0] x2;
+reg  [bw-1:0] x3;
+reg  [bw-1:0] w0;
+reg  [bw-1:0] w1;
+reg  [bw-1:0] w2;
+reg  [bw-1:0] w3;
 reg  [psum_bw-1:0] c;
 wire [psum_bw-1:0] out;
 reg  [psum_bw-1:0] expected_out = 0;
@@ -21,8 +27,17 @@ integer w_scan_file ; // file handler
 integer x_file ; // file handler
 integer x_scan_file ; // file handler
 
-integer x_dec;
-integer w_dec;
+integer x0_dec;
+integer x1_dec;
+integer x2_dec;
+integer x3_dec;
+integer w0_dec;
+integer w1_dec;
+integer w2_dec;
+integer w3_dec;
+
+
+
 integer i; 
 integer u; 
 
@@ -72,20 +87,38 @@ endfunction
 // Below function is for verification
 function [psum_bw-1:0] mac_predicted;
 
-    input [bw-1:0] a;
-    input [bw-1:0] b;
+    input [bw-1:0] x0;
+    input [bw-1:0] x1;
+    input [bw-1:0] x2;
+    input [bw-1:0] x3;
+    input [bw-1:0] w0;
+    input [bw-1:0] w1;
+    input [bw-1:0] w2;
+    input [bw-1:0] w3;
     input [psum_bw-1:0] c;
-    reg signed [psum_bw-1:0] a_extended;
-    reg signed [psum_bw-1:0] b_extended;
+    reg signed [psum_bw-1:0] x0e;
+    reg signed [psum_bw-1:0] x1e;
+    reg signed [psum_bw-1:0] x2e;
+    reg signed [psum_bw-1:0] x3e;
+    reg signed [psum_bw-1:0] w0e;
+    reg signed [psum_bw-1:0] w1e;
+    reg signed [psum_bw-1:0] w2e;
+    reg signed [psum_bw-1:0] w3e;
     reg signed [psum_bw-1:0] result;
     begin
-        // Zero-extend 'a' (unsigned) to psum_bw, then treat as signed
-        a_extended = {{(psum_bw-bw){1'b0}}, a};
+
+        x0e = {{(psum_bw-bw){1'b0}}, x0};
+        x1e = {{(psum_bw-bw){1'b0}}, x1};
+        x2e = {{(psum_bw-bw){1'b0}}, x2};
+        x3e = {{(psum_bw-bw){1'b0}}, x3};
         
-        // Sign-extend 'b' 
-        b_extended = {{(psum_bw-bw){b[bw-1]}}, b};
         
-        result = (a_extended * b_extended) + $signed(c);
+        w0e = {{(psum_bw-bw){w0[bw-1]}}, w0};
+        w1e = {{(psum_bw-bw){w1[bw-1]}}, w1};
+        w2e = {{(psum_bw-bw){w2[bw-1]}}, w2};
+        w3e = {{(psum_bw-bw){w3[bw-1]}}, w3};
+        
+        result = (x0e * w0e) + (x1e * w1e) + (x2e * w2e) + (x3e * w3e) + $signed(c);
         mac_predicted = result;
     end
 
@@ -94,9 +127,15 @@ endfunction
 
 
 mac_wrapper #(.bw(bw), .psum_bw(psum_bw)) mac_wrapper_instance (
-	      .clk(clk), 
-        .a(a), 
-        .b(b),
+	      .clk(clk),
+        .x0(x0),
+        .x1(x1),
+        .x2(x2),
+        .x3(x3),
+        .w0(w0),
+        .w1(w1),
+        .w2(w2),
+        .w3(w3),
         .c(c),
 	.out(out)
 ); 
@@ -125,11 +164,17 @@ initial begin
      w_scan_file = $fscanf(w_file, "%d\n", w_dec);
      x_scan_file = $fscanf(x_file, "%d\n", x_dec);
 
-     a = x_bin(x_dec); // unsigned number
-     b = w_bin(w_dec); // signed number
+     x0 = x_bin(x0_dec); // unsigned number
+     x1 = x_bin(x1_dec);
+     x2 = x_bin(x2_dec);
+     x3 = x_bin(x3_dec);
+     w0 = w_bin(w0_dec); // signed number
+     w1 = w_bin(w1_dec);
+     w2 = w_bin(w2_dec);
+     w3 = w_bin(w3_dec);
      c = expected_out;
-
-     expected_out = mac_predicted(a, b, c);
+     expected_out = mac_predicted(x0, x1, x2, x3, w0, w1, w2, w3, c);
+     
 
   end
 

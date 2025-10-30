@@ -7,20 +7,34 @@ module vector_mac(output [psum_bw-1:0] psum_out,
     parameter bw = 4;
     parameter psum_bw = 16;
 
-    wire signed [psum_bw-1:0] prod0, prod1, prod2, prod3; //products
+    
+    wire [psum_bw-1:0] x0_ext_unsigned = {{(psum_bw-bw){1'b0}}, x0};
+    wire [psum_bw-1:0] x1_ext_unsigned = {{(psum_bw-bw){1'b0}}, x1};
+    wire [psum_bw-1:0] x2_ext_unsigned = {{(psum_bw-bw){1'b0}}, x2};
+    wire [psum_bw-1:0] x3_ext_unsigned = {{(psum_bw-bw){1'b0}}, x3};
 
-    //4 mac modules
-    mac #(.bw(bw), .psum_bw(psum_bw)) mac0 (.out(prod0), .a(x0), .b(w0), .c({psum_bw{1'b0}}));
-    mac #(.bw(bw), .psum_bw(psum_bw)) mac1 (.out(prod1), .a(x1), .b(w1), .c({psum_bw{1'b0}}));
-    mac #(.bw(bw), .psum_bw(psum_bw)) mac2 (.out(prod2), .a(x2), .b(w2), .c({psum_bw{1'b0}}));
-    mac #(.bw(bw), .psum_bw(psum_bw)) mac3 (.out(prod3), .a(x3), .b(w3), .c({psum_bw{1'b0}}));
+    wire signed [psum_bw-1:0] x0_ext = $signed(x0_ext_unsigned);
+    wire signed [psum_bw-1:0] x1_ext = $signed(x1_ext_unsigned);
+    wire signed [psum_bw-1:0] x2_ext = $signed(x2_ext_unsigned);
+    wire signed [psum_bw-1:0] x3_ext = $signed(x3_ext_unsigned);
 
-    //sum
-    wire signed [psum_bw-1:0] sum01, sum23;
-    assign sum01 = $signed(prod0) + $signed(prod1);
-    assign sum23 = $signed(prod2) + $signed(prod3);
+    // Sign-extend w0-w3 (signed weights) to psum_bw
+    wire signed [psum_bw-1:0] w0_ext = {{(psum_bw-bw){w0[bw-1]}}, w0};
+    wire signed [psum_bw-1:0] w1_ext = {{(psum_bw-bw){w1[bw-1]}}, w1};
+    wire signed [psum_bw-1:0] w2_ext = {{(psum_bw-bw){w2[bw-1]}}, w2};
+    wire signed [psum_bw-1:0] w3_ext = {{(psum_bw-bw){w3[bw-1]}}, w3};
 
-    //accumulate
+    // Calculate 4 products
+    wire signed [psum_bw-1:0] prod0 = x0_ext * w0_ext;
+    wire signed [psum_bw-1:0] prod1 = x1_ext * w1_ext;
+    wire signed [psum_bw-1:0] prod2 = x2_ext * w2_ext;
+    wire signed [psum_bw-1:0] prod3 = x3_ext * w3_ext;
+
+    // Tree addition
+    wire signed [psum_bw-1:0] sum01 = prod0 + prod1;
+    wire signed [psum_bw-1:0] sum23 = prod2 + prod3;
+
+    // Final accumulation: (x0*w0 + x1*w1 + x2*w2 + x3*w3) + psum_in
     assign psum_out = sum01 + sum23 + $signed(psum_in);
 
 endmodule
