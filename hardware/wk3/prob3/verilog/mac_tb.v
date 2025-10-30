@@ -75,11 +75,17 @@ function [psum_bw-1:0] mac_predicted;
     input [bw-1:0] a;
     input [bw-1:0] b;
     input [psum_bw-1:0] c;
-    integer signed a_signed;
+    reg signed [psum_bw-1:0] a_extended;
+    reg signed [psum_bw-1:0] b_extended;
     reg signed [psum_bw-1:0] result;
     begin
-        a_signed = $signed(a);
-        result = ($signed(a_signed*b)) + c;
+        // Zero-extend 'a' (unsigned) to psum_bw, then treat as signed
+        a_extended = {{(psum_bw-bw){1'b0}}, a};
+        
+        // Sign-extend 'b' 
+        b_extended = {{(psum_bw-bw){b[bw-1]}}, b};
+        
+        result = (a_extended * b_extended) + $signed(c);
         mac_predicted = result;
     end
 
