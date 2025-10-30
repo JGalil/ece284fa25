@@ -14,7 +14,11 @@ wire signed [2*bw:0] mult;
 
 wire signed [psum_bw-1:0] add;
 
-assign mult = {1'b0, a} * {{b[bw-1]}, b};
+wire signed a_signed = {1'b0, a};
+
+wire signed b_signed = {{b[bw-1]}, b};
+
+assign mult =  a_signed * b_signed;
 assign add = {{(psum_bw - (2*bw+1)){mult[2*bw]}}, mult};
 assign out = add + c;
 
