@@ -75,9 +75,11 @@ function [psum_bw-1:0] mac_predicted;
     input [bw-1:0] a;
     input [bw-1:0] b;
     input [psum_bw-1:0] c;
+    integer signed a_signed;
     reg signed [psum_bw-1:0] result;
     begin
-        result = ($signed(a) * b) + c;
+        a_signed = $signed(a);
+        result = ($signed(a_signed*b)) + c;
         mac_predicted = result;
     end
 
