@@ -10,9 +10,9 @@ input  [bw-1:0] a;    // unsigned activation
 input  [bw-1:0] b;    // signed weight
 input  [psum_bw-1:0] c; // signed psum
 
-wire [psum_bw-1:0] a_ext_unsigned = {{(psum_bw-bw){1'b0}}, a};
-wire signed [psum_bw-1:0] a_ext = $signed(a_ext_unsigned);
-wire signed [psum_bw-1:0] b_ext = {{(psum_bw-bw){b[bw-1]}}, b};
+wire [bw:0] a_ext_unsigned = {{(psum_bw-bw){1'b0}}, a};
+wire signed [bw:0] a_ext = $signed(a_ext_unsigned);
+wire signed [bw:0] b_ext = {b[bw-1], b};
 
 assign out = (a_ext * b_ext) + c;
 

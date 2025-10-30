@@ -14,7 +14,7 @@ reg [bw-1:0] x0_q, x1_q, x2_q, x3_q;
 reg [bw-1:0] w0_q, w1_q, w2_q, w3_q;
 reg [psum_bw-1:0] psum_in_q;
 
-vector_mac #(.bw(bw), .psum_bw(psum_bw)) core (
+vector_mac #(.bw(bw), .psum_bw(psum_bw)) vector_mac_instance (
     .psum_out(psum_out),
     .x0(x0_q), .x1(x1_q), .x2(x2_q), .x3(x3_q),
     .w0(w0_q), .w1(w1_q), .w2(w2_q), .w3(w3_q),
