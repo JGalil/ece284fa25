@@ -35,14 +35,15 @@ mac #(.bw(bw), .psum_bw(psum_bw)) mac_instance (
 ); 
 
 always @ (posedge clk) begin
-        x0 <= x0_q;
-        x1 <= x1_q;
-        x2 <= x2_q;
-        x3 <= x3_q;
-        w0 <= w0_q;
-        w1 <= w1_q;
-        w2 <= w2_q;
-        w3 <= w3_q;
+        x0_q <= x0;
+        x1_q <= x1;
+        x2_q <= x2;
+        x3_q <= x3;
+        w0_q <= w0;
+        w1_q <= w1;
+        w2_q <= w2;
+        w3_q <= w3;
+        c_q <= c;
 end
 
 endmodule
