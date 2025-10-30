@@ -161,8 +161,8 @@ initial begin
      #1 clk = 1'b1;
      #1 clk = 1'b0;
 
-     w_scan_file = $fscanf(w_file, "%d\n", w_dec);
-     x_scan_file = $fscanf(x_file, "%d\n", x_dec);
+    w_scan_file = $fscanf(w_file, "%d\n%d\n%d\n%d\n", w0_dec, w1_dec, w2_dec, w3_dec);
+    x_scan_file = $fscanf(x_file, "%d\n%d\n%d\n%d\n", x0_dec, x1_dec, x2_dec, x3_dec);
 
      x0 = x_bin(x0_dec); // unsigned number
      x1 = x_bin(x1_dec);
