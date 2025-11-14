@@ -27,7 +27,7 @@ module mac_array (clk, reset, out_s, in_w, in_n, inst_w, valid);
         .clk(clk),
         .reset(reset),
         .in_w(in_w[bw*i-1:bw*(i-1)]),
-        inst_w(inst_w[2*i-1:2*(i-1)]),
+        .inst_w(inst_w[2*i-1:2*(i-1)]),
         .in_n(psum_temp[psum_bw*col*i-1: psum_bw*col*(i-1)]),
         .out_s(psum_temp[psum_bw*co*(i+1)-1:psum_bw*col*i]),
         .valid(valid_temp[col*i-1:col*(i-1)])
