@@ -40,7 +40,7 @@ module mac_array (clk, reset, out_s, in_w, in_n, inst_w, valid);
     end
   endgenerate
 
-  
+
 
   assign out_s = psum_temp[psum_bw*col*(row+1)-1:psum_bw*col*row];
   assign valid = valid_temp[col*(row+1)-1:col*row];
@@ -50,10 +50,13 @@ module mac_array (clk, reset, out_s, in_w, in_n, inst_w, valid);
       inst_temp <= 0;
     end
     else begin
+      inst_temp <= {inst_temp[2*(row+1)-3:0], inst_w};
+      /*
       inst_temp[1:0] <= inst_w;
       for(j = 1; j < row+1; j = j+1) begin
         inst_temp[2*(j+1)-1:2*j] <= inst_temp[2*j-1:2*j];
       end
+      */
     end
   end
 
