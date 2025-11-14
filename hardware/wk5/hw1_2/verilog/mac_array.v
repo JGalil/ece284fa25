@@ -43,7 +43,7 @@ module mac_array (clk, reset, out_s, in_w, in_n, inst_w, valid);
     end
     else begin
       inst_temp[1:0] <= inst_w;
-      for(int j = 1; j < row+1; j = j+1) begin
+      for(j = 1; j < row+1; j = j+1) begin
         inst_temp[2*(j+1)-1:2*j] <= inst_temp[2*j-1:2*j];
       end
     end
