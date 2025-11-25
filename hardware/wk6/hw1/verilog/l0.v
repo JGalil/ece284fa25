@@ -17,7 +17,6 @@ module l0 (clk, in, out, rd, wr, o_full, reset, o_ready);
   wire [row-1:0] empty;
   wire [row-1:0] full;
   reg [row-1:0] rd_en;
-  reg [3:0] rd_ptr;
 
   genvar i;
 
@@ -54,12 +53,14 @@ module l0 (clk, in, out, rd, wr, o_full, reset, o_ready);
 
       //////////////// version2: read 1 row at a time /////////////////
       /*
-      rd_en <= 8'b0;
       if(rd) begin
-         rd_en[rd_ptr] <= 1'b1;
-         rd_ptr <= rd_ptr + 1;
+         rd_en <= rd_en << 1 | 1'b1;
+      end
+      else begin
+         rd_en <= rd_en << 1 | 1'b0;
       end
       */
+      
       
       ///////////////////////////////////////////////////////
     end
